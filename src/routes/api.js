@@ -10,7 +10,8 @@ const initApiRoutes = (app) => {
     router.post("/login", apiController.onSubmitLogin);
 
     //  user CRUD 
-    router.get("/user/show", userController.readfunc);
+    router.get("/user/show", userController.readFunc);
+    router.get("/user/shows", userController.readOneFunc);
     router.post("/user/create", userController.createFunc);
     router.put("/user/update", userController.updateFunc);
     router.delete("user/delete", userController.deleteFunc);

@@ -30,6 +30,36 @@ const getAllUser = async () => {
     }
 }
 
+const getUser = async (id) => {
+    try {
+        let user = await db.NhanVien.findOne({
+            attributes: ['MaNhanVien', 'Level', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
+            where: { id: id }
+        });
+
+        if (user) {
+            // let data = user.get({ plain: true })
+            return {
+                EM: "get data success",
+                EC: 0,
+                DT: user
+            }
+        } else {
+            return {
+                EM: "get data success",
+                EC: 0,
+                DT: []
+            }
+        }
+    } catch (error) {
+        return {
+            EM: "something wrongs with services",
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
 const createNewUser = (data) => {
     try {
 
@@ -80,5 +110,5 @@ const deleteUser = async (id) => {
 }
 
 module.exports = {
-    getAllUser, createNewUser, updateUser, deleteUser
+    getAllUser, createNewUser, updateUser, deleteUser, getUser
 }
