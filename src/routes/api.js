@@ -1,6 +1,11 @@
 import express from "express";
 import apiController from "../controllers/apiController";
 import userController from "../controllers/userController";
+import sanPhamController from "../controllers/sanPhamController";
+import khoHangController from "../controllers/khoHangController";
+import nhapKhoController from "../controllers/nhapKhoController";
+import xuatKhoController from "../controllers/xuatKhoController";
+import selectController from "../controllers/secectController";
 
 const router = express.Router();
 
@@ -15,6 +20,28 @@ const initApiRoutes = (app) => {
     router.post("/user/create", userController.createFunc);
     router.put("/user/update", userController.updateFunc);
     router.delete("user/delete", userController.deleteFunc);
+
+    router.get("/sanpham/show", sanPhamController.getAllSP);
+
+    router.get("/khohang/tongquang/loaisanpham", khoHangController.getLoaiSanPham);
+    router.get("/khohang/tongquang/piechartdata", khoHangController.getPieChartData);
+    router.get("/khohang/tongquang/danhsachsanpham", khoHangController.getAllData);
+    router.get("/khohang/tongquang/chitiet", khoHangController.getSanPham);
+
+    router.get("/xuatnhap/nhapkho/admin", nhapKhoController.getAllData);
+    router.get("/xuatnhap/nhapkho/user", nhapKhoController.getUserData);
+    router.get("/xuatnhap/xuatkho/admin", nhapKhoController.getAllData);
+    router.get("/xuatnhap/xuatkho/user", nhapKhoController.getUserData);
+
+    router.get("/xuatnhap/xuatkho/tongquan/loaisanphamlinechart", xuatKhoController.getLoaiSPLineChart);
+    router.get("/xuatnhap/xuatkho/tongquan/loaisanphamlinecharts", xuatKhoController.getLoaiSPLineCharts);
+    router.get("/xuatnhap/xuatkho/tongquan/sanphamlinechart", xuatKhoController.getSPLineChart);
+    router.get("/xuatnhap/xuatkho/tongquan/sanphamlinecharts", xuatKhoController.getSPLineCharts);
+    router.get("/xuatnhap/xuatkho/tongquan/listloaisanpham", xuatKhoController.getLoaiSanPhamData);
+
+    router.get("/select/sanpham", selectController.getSanPham);
+    router.get("/select/loaisanpham", selectController.getLoaiSanPham);
+    router.get("/select/group", selectController.getLevel);
 
     return app.use("/api/v1/", router);
 }

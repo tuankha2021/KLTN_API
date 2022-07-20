@@ -1,9 +1,9 @@
-import userServices from "../services/userApiServices";
+import khoHangServices from '../services/khoHangServices';
 
-const readFunc = async (req, res) => {
+const getLoaiSanPham = async (req, res) => {
     try {
 
-        let data = await userServices.getAllUser();
+        let data = await khoHangServices.getLoaiSanPham();
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -20,10 +20,10 @@ const readFunc = async (req, res) => {
     }
 }
 
-const readOneFunc = async (req, res) => {
+const getAllData = async (req, res) => {
     try {
 
-        let data = await userServices.getUser(1);
+        let data = await khoHangServices.getAllData();
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -40,34 +40,16 @@ const readOneFunc = async (req, res) => {
     }
 }
 
-const createFunc = async (req, res) => {
+const getPieChartData = async (req, res) => {
     try {
 
-        //validate on server
-        if (!req.body.MaNhanVien || !req.body.HoTen || !req.body.GioiTinh || !req.body.Tel || !req.body.NgaySinh || !req.body.address || !req.body.Password) {
-            return res.status(200).json({
-                EM: 'Thông tin truyền vào không đầy đủ !', // error message
-                EC: '1', // error code
-                DT: '', // data
-            })
-        }
-
-        if (req.body.Password && req.body.Password.length < 6) {
-            return res.status(200).json({
-                EM: 'Mật khẩu chứ ít nhất 6 ký tự !', // error message
-                EC: '1', // error code
-                DT: '', // data
-            })
-        }
-
-        let data = await userServices.createNewUser(req.body);
+        let data = await khoHangServices.getPieChartData();
 
         return res.status(200).json({
             EM: data.EM, // error message
             EC: data.EC, // error code
-            DT: '', // data
+            DT: data.DT // data
         })
-
     } catch (error) {
         console.log(error);
         return res.status(500).Json({
@@ -76,17 +58,28 @@ const createFunc = async (req, res) => {
             DT: '' // data
         })
     }
-
 }
 
-const updateFunc = (req, res) => {
+const getSanPham = async (req, res) => {
+    try {
 
-}
+        let data = await khoHangServices.getSanPham();
 
-const deleteFunc = (req, res) => {
-
+        return res.status(200).json({
+            EM: data.EM, // error message
+            EC: data.EC, // error code
+            DT: data.DT // data
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).Json({
+            EM: 'error from server . . .', // error message
+            EC: '-1', // error code
+            DT: '' // data
+        })
+    }
 }
 
 module.exports = {
-    readFunc, createFunc, updateFunc, deleteFunc, readOneFunc
+    getAllData, getSanPham, getLoaiSanPham, getPieChartData
 }

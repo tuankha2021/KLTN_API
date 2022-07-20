@@ -4,59 +4,55 @@ module.exports = {
     await queryInterface.createTable('NhanVien', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        autoIncrement: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
-      MaNhanVien: {
-        type: Sequelize.STRING(9),
-        allowNull: false
-      },
-      Level: {
+      GroupId: {
+        allowNull: false,
         type: Sequelize.INTEGER(1),
-        defaultValue: '0'
+        defaultValue: '1'
       },
       HoTen: {
-        type: Sequelize.STRING(100),
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       NgaySinh: {
-        type: Sequelize.DATEONLY,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.DATEONLY
       },
       GioiTinh: {
-        type: Sequelize.INTEGER(1),
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.INTEGER(1)
       },
       Tel: {
-        type: Sequelize.STRING(10),
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING(10)
       },
       Email: {
         type: Sequelize.STRING
       },
       Address: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       TrangThai: {
         type: Sequelize.INTEGER(1),
         defaultValue: '1'
       },
       NgayVaoLam: {
-        type: Sequelize.DATEONLY,
-        allowNull: false
+        type: Sequelize.DATEONLY
       },
       NgayNghi: {
         type: Sequelize.DATEONLY
       },
       Vang: {
         type: Sequelize.INTEGER(1),
-        defaultValue: '0'
+        defaultValue: '1'
       },
       Password: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       DanhGia: {
         type: Sequelize.STRING

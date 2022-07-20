@@ -4,6 +4,7 @@ import url from "./routes/web";
 import bodyParser from 'body-parser';
 import connection from './config/connectDB';
 import urlAPI from "./routes/api";
+import { createJWT, verufyToken } from "./middleware/jwtAction";
 
 require("dotenv").config();
 
@@ -40,6 +41,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //test connect database
 connection();
+
+//test jwt
+createJWT()
 
 //web router
 url(app);

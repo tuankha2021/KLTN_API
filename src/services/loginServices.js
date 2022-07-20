@@ -1,6 +1,7 @@
 import db from '../models/index';
 import bcrypt from 'bcryptjs';
 import { Op } from 'sequelize';
+import { getGroupRole } from './jwtServices';
 
 const checkPassword = (inputPass, hashPass) => {
     return bcrypt.compareSync(inputPass, hashPass); // return true or false
@@ -14,7 +15,9 @@ const handleUserLogin = async (rawData) => {
 
         if (user) {
             let isCorrectPass = checkPassword(rawData.password, user.Password);
+
             if (isCorrectPass == true) {
+
                 if (user.Level == 1) {
                     return {
                         EM: 'Login with Admin',

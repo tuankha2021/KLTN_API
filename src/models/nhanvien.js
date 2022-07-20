@@ -11,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      NhanVien.belongsTo(models.Group);
+      NhanVien.hasMany(models.NhapKho);
+      NhanVien.hasMany(models.XuatKho);
     }
   };
   NhanVien.init({
-    MaNhanVien: DataTypes.STRING,
-    Level: DataTypes.INTEGER,
+    // id: DataTypes.STRING,
+    GroupId: DataTypes.INTEGER,
     HoTen: DataTypes.STRING,
     NgaySinh: DataTypes.DATEONLY,
     GioiTinh: DataTypes.INTEGER,
@@ -28,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     Vang: DataTypes.INTEGER,
     Password: DataTypes.STRING,
     DanhGia: DataTypes.STRING,
-    Avata: DataTypes.STRING
+    Avata: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'NhanVien',
