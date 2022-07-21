@@ -2,11 +2,15 @@ import db from "../models/index";
 
 const getGroupRole = async (user) => {
     let role = await db.Group.findOne({
-        where: { id: GroupId },
-        include: [{ model: db.Role }]
+        attributes: ['id', 'Name', 'Description'],
+        where: { id: user.GroupId },
+        include: [{
+            model: db.Role,
+            attributes: ['id', 'Url'],
+            through: { attributes: [] }
+        }]
     })
-
-    console.log(role)
+    return role;
 }
 
 module.exports = {

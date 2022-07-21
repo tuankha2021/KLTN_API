@@ -1,7 +1,9 @@
+require('dotenv').config;
 import db from '../models/index';
 import bcrypt from 'bcryptjs';
 import { Op } from 'sequelize';
 import { getGroupRole } from './jwtServices';
+import { createJWT } from '../middleware/jwtAction';
 
 const checkPassword = (inputPass, hashPass) => {
     return bcrypt.compareSync(inputPass, hashPass); // return true or false
@@ -10,7 +12,7 @@ const checkPassword = (inputPass, hashPass) => {
 const handleUserLogin = async (rawData) => {
     try {
         let user = await db.NhanVien.findOne({
-            where: { MaNhanVien: rawData.idNhanVien }
+            where: { id: rawData.idNhanVien }
         })
 
         if (user) {
@@ -18,17 +20,33 @@ const handleUserLogin = async (rawData) => {
 
             if (isCorrectPass == true) {
 
-                if (user.Level == 1) {
+                // check role
+                let groupRole = await getGroupRole(user);
+                let payload = {
+                    MaNhanVien: user.id,
+                    Email: user.Email,
+                    groupRole,
+                    expiresIn: process.env.JWT_EXPIRES_IN
+                }
+                let token = createJWT(payload)
+                if (user.GroupId == 5) {
                     return {
                         EM: 'Login with Admin',
                         EC: 1,
-                        DT: ''
+                        DT: {
+                            access_token: token,
+                            groupRole
+                        }
                     }
                 }
                 return {
                     EM: 'Login with User',
                     EC: 0,
-                    DT: ''
+                    DT: {
+                        access_token: token,
+                        groupRole,
+
+                    }
                 }
 
             }

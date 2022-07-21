@@ -1,12 +1,11 @@
+require("dotenv").config();
 import express from "express";
 import configView from "./config/config";
 import url from "./routes/web";
 import bodyParser from 'body-parser';
 import connection from './config/connectDB';
 import urlAPI from "./routes/api";
-import { createJWT, verufyToken } from "./middleware/jwtAction";
-
-require("dotenv").config();
+import cookieParser from "cookie-parser";
 
 // require("dotenv").config();
 const app = express();
@@ -39,17 +38,22 @@ configView(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//config cookie parser
+app.use(cookieParser());
+
 //test connect database
 connection();
-
-//test jwt
-createJWT()
 
 //web router
 url(app);
 
 //web api
 urlAPI(app);
+
+//middleware 404
+app.use((req, res) => {
+    return res.send("404 not found ")
+})
 
 app.listen(PORT, () => {
     console.log(">>> server is running on port " + PORT);
