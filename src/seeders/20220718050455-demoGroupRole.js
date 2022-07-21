@@ -5,9 +5,37 @@ module.exports = {
 
     await queryInterface.bulkInsert('GroupRole', [
       {
-        GroupId: '0',
-        RoleId: '0'
-      }
+        GroupId: '1',
+        RoleId: '2'
+      },
+      {
+        GroupId: '1',
+        RoleId: '4'
+      },
+      {
+        GroupId: '2',
+        RoleId: '1'
+      },
+      {
+        GroupId: '2',
+        RoleId: '2'
+      },
+      {
+        GroupId: '2',
+        RoleId: '3'
+      },
+      {
+        GroupId: '2',
+        RoleId: '4'
+      },
+      {
+        GroupId: '2',
+        RoleId: '5'
+      },
+      {
+        GroupId: '2',
+        RoleId: '6'
+      },
     ], {});
 
   },

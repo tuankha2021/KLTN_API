@@ -4,12 +4,14 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Group', [
       {
-        Name: 'Nhân viên quản lý kho',
-        Description: 'quản lý mọi hoạt động của kho hàng'
-      },
-      {
+        id: 1,
         Name: 'Nhân viên kho hàng',
         Description: 'Thực hiện các hoạt động của kho hàng'
+      },
+      {
+        id: 2,
+        Name: 'Nhân viên quản lý kho',
+        Description: 'quản lý mọi hoạt động của kho hàng'
       },
     ], {});
   },
