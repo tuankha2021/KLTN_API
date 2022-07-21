@@ -29,22 +29,13 @@ const handleUserLogin = async (rawData) => {
                     expiresIn: process.env.JWT_EXPIRES_IN
                 }
                 let token = createJWT(payload)
-                if (user.GroupId == 5) {
-                    return {
-                        EM: 'Login with Admin',
-                        EC: 1,
-                        DT: {
-                            access_token: token,
-                            groupRole
-                        }
-                    }
-                }
                 return {
-                    EM: 'Login with User',
+                    EM: 'Đăng nhập thành công !',
                     EC: 0,
                     DT: {
                         access_token: token,
                         groupRole,
+                        user
 
                     }
                 }
