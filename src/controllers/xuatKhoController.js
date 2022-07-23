@@ -42,7 +42,6 @@ const getUserData = async (req, res) => {
 
 const getLoaiSPLineChart = async (req, res) => {
     try {
-
         let data = await xuatKhoServices.getLoaiSPLineChart();
 
         return res.status(200).json({

@@ -15,7 +15,7 @@ module.exports = {
     await queryInterface.bulkInsert('NhanVien', [
       {
         id: 'NVK171200',
-        GroupId: '0',
+        GroupId: '2',
         HoTen: 'Admin',
         NgaySinh: '1995-01-30',
         GioiTinh: '1',
@@ -27,7 +27,7 @@ module.exports = {
       },
       {
         id: 'NVK171201',
-        GroupId: '0',
+        GroupId: '2',
         HoTen: 'Nguyễn Thanh Toàn',
         NgaySinh: '1998-06-25',
         GioiTinh: '1',
@@ -39,7 +39,7 @@ module.exports = {
       },
       {
         id: 'NVK171202',
-        GroupId: '0',
+        GroupId: '1',
         HoTen: 'Nguyễn Văn Tài',
         NgaySinh: '1999-04-03',
         GioiTinh: '1',

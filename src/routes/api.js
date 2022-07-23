@@ -1,4 +1,7 @@
-import express from "express";
+import express, { Router } from "express";
+
+import { checkUserCookies, checkUserPermission } from "../middleware/jwtAction";
+
 import apiController from "../controllers/apiController";
 import userController from "../controllers/userController";
 import sanPhamController from "../controllers/sanPhamController";
@@ -9,11 +12,19 @@ import selectController from "../controllers/secectController";
 
 const router = express.Router();
 
+// const checkUser = (req, res, next) => {
+//     const nonSecruePaths = ['/login'];
+//     if (nonSecruePaths.includes(req.path)) {
+//         return nonSecruePaths();
+//     }
+//     next();
+// }
 
 const initApiRoutes = (app) => {
 
-    router.post("/login", apiController.onSubmitLogin);
+    router.all('*', checkUserCookies, checkUserPermission,);
 
+    router.post("/login", apiController.onSubmitLogin);
     //  user CRUD 
     router.get("/user/show", userController.readFunc);
     router.get("/user/shows", userController.readOneFunc);
@@ -23,10 +34,10 @@ const initApiRoutes = (app) => {
 
     router.get("/sanpham/show", sanPhamController.getAllSP);
 
-    router.get("/khohang/tongquang/loaisanpham", khoHangController.getLoaiSanPham);
-    router.get("/khohang/tongquang/piechartdata", khoHangController.getPieChartData);
-    router.get("/khohang/tongquang/danhsachsanpham", khoHangController.getAllData);
-    router.get("/khohang/tongquang/chitiet", khoHangController.getSanPham);
+    router.get("/khohang/tongquan/loaisanpham", khoHangController.getLoaiSanPham);
+    router.get("/khohang/tongquan/piechartdata", khoHangController.getPieChartData);
+    router.get("/khohang/tongquan/danhsachsanpham", khoHangController.getAllData);
+    router.get("/khohang/tongquan/chitiet", khoHangController.getSanPham);
 
     router.get("/xuatnhap/nhapkho/admin", nhapKhoController.getAllData);
     router.get("/xuatnhap/nhapkho/user", nhapKhoController.getUserData);
