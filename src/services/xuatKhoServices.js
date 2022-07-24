@@ -6,7 +6,6 @@ const getAllData = async () => {
     try {
 
         let user = await db.XuatKho.findAll({
-            attributes: [],
             include: [{ model: db.NhanVien, attributes: ['HoTen'] }, { model: db.SanPham, attributes: ['TenSanPham'] }],
 
         });

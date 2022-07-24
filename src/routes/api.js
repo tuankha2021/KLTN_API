@@ -41,8 +41,8 @@ const initApiRoutes = (app) => {
 
     router.get("/xuatnhap/nhapkho/admin", nhapKhoController.getAllData);
     router.get("/xuatnhap/nhapkho/user", nhapKhoController.getUserData);
-    router.get("/xuatnhap/xuatkho/admin", nhapKhoController.getAllData);
-    router.get("/xuatnhap/xuatkho/user", nhapKhoController.getUserData);
+    router.get("/xuatnhap/xuatkho/admin", xuatKhoController.getAllData);
+    router.get("/xuatnhap/xuatkho/user", xuatKhoController.getUserData);
 
     router.get("/xuatnhap/xuatkho/tongquan/loaisanphamlinechart", xuatKhoController.getLoaiSPLineChart);
     router.get("/xuatnhap/xuatkho/tongquan/loaisanphamlinecharts", xuatKhoController.getLoaiSPLineCharts);
