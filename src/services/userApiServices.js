@@ -12,7 +12,7 @@ const hashPassword = (password) => {
 const getAllUser = async () => {
     try {
         let user = await db.NhanVien.findAll({
-            attributes: ['MaNhanVien', 'Level', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
+            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
 
         });
 
@@ -31,6 +31,7 @@ const getAllUser = async () => {
             }
         }
     } catch (error) {
+        console.log(error)
         return {
             EM: "something wrongs with services",
             EC: 1,
