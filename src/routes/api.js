@@ -22,7 +22,7 @@ const router = express.Router();
 
 const initApiRoutes = (app) => {
 
-    router.all('*', checkUserCookies, checkUserPermission,);
+    // router.all('*', checkUserCookies, checkUserPermission,);
 
     router.post("/login", apiController.onSubmitLogin);
     //  user CRUD 
