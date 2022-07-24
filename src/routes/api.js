@@ -22,7 +22,7 @@ const router = express.Router();
 
 const initApiRoutes = (app) => {
 
-    router.all('*', checkUserCookies, checkUserPermission,);
+    // router.all('*', checkUserCookies, checkUserPermission,);
 
     router.post("/login", apiController.onSubmitLogin);
     //  user CRUD 
@@ -36,7 +36,7 @@ const initApiRoutes = (app) => {
 
     router.get("/khohang/tongquan/loaisanpham", khoHangController.getLoaiSanPham);
     router.get("/khohang/tongquan/piechartdata", khoHangController.getPieChartData);
-    router.get("/khohang/tongquan/danhsachsanpham", khoHangController.getAllData);
+    router.post("/khohang/tongquan/danhsachsanpham", khoHangController.getAllData);
     router.get("/khohang/tongquan/chitiet", khoHangController.getSanPham);
 
     router.get("/xuatnhap/nhapkho/admin", nhapKhoController.getAllData);

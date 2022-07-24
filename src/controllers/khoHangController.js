@@ -23,7 +23,7 @@ const getLoaiSanPham = async (req, res) => {
 const getAllData = async (req, res) => {
     try {
 
-        let data = await khoHangServices.getAllData();
+        let data = await khoHangServices.getAllData(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message

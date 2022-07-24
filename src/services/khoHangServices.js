@@ -35,12 +35,12 @@ const getLoaiSanPham = async () => {
     }
 }
 
-const getAllData = async (MaLoai) => {
+const getAllData = async (rawdata) => {
     try {
-        MaLoai = "F"
+        // MaLoai = "F"
         let data = await db.Khohang.findAll({
             attributes: ['SanPhamId', [sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong']],
-            where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: MaLoai },
+            where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: rawdata.MaLoai },
             group: 'SanPhamId',
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
         });
@@ -68,32 +68,47 @@ const getAllData = async (MaLoai) => {
     }
 }
 
-const getPieChartData = async (MaLoai) => {
+const getPieChartData = async () => {
+    // let MaLoai = 'F';
     try {
-        MaLoai = "F"
-        let getdata = await db.Khohang.findAll({
-            attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong']],
-            where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: MaLoai },
-            group: 'SanPhamId',
-            include: { model: db.SanPham, attributes: ['TenSanPham'] },
+        let data = [];
+
+        let loaiSP = await db.Khohang.findAll({
+            attributes: ['LoaiSanPhamId'],
+            where: { SoLuong: { [Op.gt]: 0 } },
+            group: 'LoaiSanPhamId',
+            include: { model: db.LoaiSanPham, attributes: ['TenLoai'] },
         });
 
-        let data = {
-            AddData: function (tensp, soluong) {
-                this.tensp = tensp;
-                this.soluong = soluong;
+        for (let i in loaiSP) {
+            let obj = {
+                AddData: function (loaisp, tensp, soluong) {
+                    this.loaisp = loaisp;
+                    this.tensp = tensp;
+                    this.soluong = soluong;
+                }
+            };
+            let getdata = await db.Khohang.findAll({
+                attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong']],
+                where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                group: 'SanPhamId',
+                include: { model: db.SanPham, attributes: ['TenSanPham'] },
+            });
+
+            let listTensp = [];
+            let listSoluong = [];
+            for (let i in getdata) {
+                listTensp.push(getdata[i].SanPham.TenSanPham);
+                listSoluong.push(getdata[i].SoLuong);
             }
-        };
 
-        let listTensp = [];
-        let listSoluong = [];
-        for (let i in getdata) {
-            listTensp.push(getdata[i].SanPham.TenSanPham);
-            listSoluong.push(getdata[i].SoLuong);
+            obj.loaisp = loaiSP[i];
+            obj.tensp = listTensp;
+            obj.soluong = listSoluong;
+
+            data.push(obj);
+
         }
-        data.tensp = listTensp;
-        data.soluong = listSoluong;
-
         if (data) {
             return {
                 EM: "get data success",

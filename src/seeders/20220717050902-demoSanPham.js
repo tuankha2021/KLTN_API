@@ -49,7 +49,7 @@ module.exports = {
       { id: 'SC07', LoaiSanPhamId: 'SC', TenSanPham: 'Sữa chua nếp cẩm ', Hinh: 'SC07.png', TrangThai: '0', MaxTon: '10000', MinTon: '1000', Loc: '6', Thung: '24', Khay: '48', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2018-07-19', },
       { id: 'SC08', LoaiSanPhamId: 'SC', TenSanPham: 'Sữa chua bịch vị trái cây ', Hinh: 'SC08.png', TrangThai: '1', MaxTon: '20000', MinTon: '1000', Loc: '6', Thung: '12', Khay: '24', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2018-07-19', },
       { id: 'BD01', LoaiSanPhamId: 'BD', TenSanPham: 'Bánh dứa', Hinh: 'BD01.png', TrangThai: '1', MaxTon: '15000', MinTon: '1000', Loc: '6', Thung: '12', Khay: '24', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2021-07-19', },
-      { id: 'BD02', LoaiSanPhamId: 'BD', TenSanPham: 'Bánh dứa đặt biệt', Hinh: 'BD02.png', TrangThai: '0', MaxTon: '5000', MinTon: '100', Loc: '6', Thung: '12', Khay: '24', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2021-07-20', },
+      { id: 'BD02', LoaiSanPhamId: 'BD', TenSanPham: 'Bánh dứa đặc biệt', Hinh: 'BD02.png', TrangThai: '0', MaxTon: '5000', MinTon: '100', Loc: '6', Thung: '12', Khay: '24', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2021-07-20', },
       { id: 'BD03', LoaiSanPhamId: 'BD', TenSanPham: 'Bánh dứa vị matcha', Hinh: 'BD03.png', TrangThai: '0', MaxTon: '1000', MinTon: '100', Loc: '6', Thung: '12', Khay: '24', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2021-07-21', },
       { id: 'BD04', LoaiSanPhamId: 'BD', TenSanPham: 'Bánh dứa vị socola', Hinh: 'BD04.png', TrangThai: '0', MaxTon: '1000', MinTon: '100', Loc: '6', Thung: '12', Khay: '24', GiaBan: '3100', GiaSanPham: '2200', createdAt: '2021-07-22', },
     ], {});
