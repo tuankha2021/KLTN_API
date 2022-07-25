@@ -24,7 +24,7 @@ const getAllData = async (req, res) => {
     try {
 
         let data = await khoHangServices.getAllData(req.body);
-
+        console.log("check data: ", req.body);
         return res.status(200).json({
             EM: data.EM, // error message
             EC: data.EC, // error code
