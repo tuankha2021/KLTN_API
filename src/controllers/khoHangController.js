@@ -80,6 +80,7 @@ const getSanPham = async (req, res) => {
     }
 }
 
+
 module.exports = {
     getAllData, getSanPham, getLoaiSanPham, getPieChartData
 }
