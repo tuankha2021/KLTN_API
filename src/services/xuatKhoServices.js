@@ -552,10 +552,10 @@ const predictSL = async () => {
         }
 
         let date = new Date();
-        date = date.subDays(day, 40);
-
+        date = date.subDays(day, 15);
         let avg = await db.XuatKho.findAll({
             attributes: [[sequelize.fn('AVG', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
+            where: { NgayXuat: { [Op.gte]: date } },
             group: 'SanPhamId',
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
         })
@@ -564,6 +564,7 @@ const predictSL = async () => {
             attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
             group: ['SanPhamId']
         })
+
 
         for (let i in avg) {
             avg[i].SoLuong = Math.round(avg[i].SoLuong);
@@ -575,7 +576,55 @@ const predictSL = async () => {
         }
 
         if (avg) {
-            // let data = user.get({ plain: true })
+            return {
+                EM: "get data success",
+                EC: 0,
+                DT: avg
+            }
+        } else {
+            return {
+                EM: "get data success",
+                EC: 0,
+                DT: []
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: "something wrongs with services",
+            EC: 1,
+            DT: []
+        }
+    }
+
+}
+
+const predictSP = async () => {
+
+    try {
+        // get today
+        // let date = new Date(this.valueOf());
+        let day = '2022/6/18'
+
+        Date.prototype.subDays = function (day, days) {
+            var date = new Date(day);
+            date.setDate(date.getDate() - days);
+            return date;
+        }
+
+        let date = new Date();
+        date = date.subDays(day, 120);
+        let avg = await db.XuatKho.findAll({
+            limit: 3,
+            attributes: [[sequelize.fn('AVG', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
+            where: { NgayXuat: { [Op.gte]: date } },
+            group: 'SanPhamId',
+            order: [['SoLuong', 'DESC']],
+            include: { model: db.SanPham, attributes: ['TenSanPham'] },
+        })
+
+        if (avg) {
             return {
                 EM: "get data success",
                 EC: 0,
@@ -603,5 +652,6 @@ const predictSL = async () => {
 
 module.exports = {
     getAllData, getUserData, getLoaiSPLineChart, getLoaiSPLineCharts,
-    getSPLineChart, getSPLineCharts, getLoaiSanPhamData, predictSL
+    getSPLineChart, getSPLineCharts, getLoaiSanPhamData, predictSL,
+    predictSP
 }
