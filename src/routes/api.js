@@ -51,7 +51,7 @@ const initApiRoutes = (app) => {
     router.get("/xuatnhap/xuatkho/tongquan/listloaisanpham", xuatKhoController.getLoaiSanPhamData);
     router.get("/xuatnhap/tongquan/dudoansoluong", xuatKhoController.predictSL);
 
-    router.get("/select/sanpham", selectController.getSanPham);
+    router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);
     router.get("/select/group", selectController.getLevel);
 

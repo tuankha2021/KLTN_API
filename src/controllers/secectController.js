@@ -23,7 +23,7 @@ const getLoaiSanPham = async (req, res) => {
 const getSanPham = async (req, res) => {
     try {
 
-        let data = await selectServices.getSanPham();
+        let data = await selectServices.getSanPham(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message

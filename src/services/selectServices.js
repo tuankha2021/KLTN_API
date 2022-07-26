@@ -31,12 +31,12 @@ const getLoaiSanPham = async () => {
     }
 }
 
-const getSanPham = async (maloai) => {
+const getSanPham = async (rawdata) => {
     try {
-        maloai = 'F';
+        // maloai = 'F';
         let user = await db.SanPham.findAll({
             attributes: ['id', 'TenSanPham'],
-            where: { LoaiSanPhamId: maloai },
+            where: { LoaiSanPhamId: rawdata.MaLoai },
             order: [['id', 'DESC']]
         });
 
