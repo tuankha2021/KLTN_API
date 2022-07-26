@@ -23,7 +23,7 @@ const readFunc = async (req, res) => {
 const readOneFunc = async (req, res) => {
     try {
 
-        let data = await userServices.getUser(1);
+        let data = await userServices.getUser(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message

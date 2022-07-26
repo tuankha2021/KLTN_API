@@ -40,11 +40,12 @@ const getAllUser = async () => {
     }
 }
 
-const getUser = async (id) => {
+const getUser = async (rawdata) => {
     try {
         let user = await db.NhanVien.findOne({
-            attributes: ['MaNhanVien', 'Level', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
-            where: { id: id }
+            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
+            where: { id: rawdata.id },
+            include: { model: db.Group, attributes: ['Name'] },
         });
 
         if (user) {
@@ -62,6 +63,7 @@ const getUser = async (id) => {
             }
         }
     } catch (error) {
+        console.log(error)
         return {
             EM: "something wrongs with services",
             EC: 1,

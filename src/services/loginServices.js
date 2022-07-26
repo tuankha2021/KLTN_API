@@ -1,13 +1,20 @@
 require('dotenv').config;
 import db from '../models/index';
 import bcrypt from 'bcryptjs';
-import { Op } from 'sequelize';
 import { getGroupRole } from './jwtServices';
 import { createJWT } from '../middleware/jwtAction';
 
 const checkPassword = (inputPass, hashPass) => {
     return bcrypt.compareSync(inputPass, hashPass); // return true or false
 }
+
+var salt = bcrypt.genSaltSync(10);
+
+const hashPassword = (password) => {
+    let hashPass = bcrypt.hashSync(password, salt);
+    return hashPass;
+}
+
 
 const handleUserLogin = async (rawData) => {
     try {
@@ -46,6 +53,8 @@ const handleUserLogin = async (rawData) => {
             }
         }
 
+        console.log(">>> pass: ", hashPassword("Admin123456"))
+        console.log(">>> check pass: ", checkPassword("Admin123456", "$2a$10$Yqe34RxYfdJkaWsGXWdj7ukD.3lXGwNqm6A9EPqjXOF5DVqfjngvm"))
         console.log(">>> Not found MaNhanVien: ", rawData.idNhanVien, " or Password: ", rawData.password);
         return {
             EM: 'ID nhân viên hoặc mật khẩu không chính xác !',
