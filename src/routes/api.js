@@ -49,7 +49,10 @@ const initApiRoutes = (app) => {
     router.get("/xuatnhap/xuatkho/tongquan/sanphamlinechart", xuatKhoController.getSPLineChart);
     router.get("/xuatnhap/xuatkho/tongquan/sanphamlinecharts", xuatKhoController.getSPLineCharts);
     router.get("/xuatnhap/xuatkho/tongquan/listloaisanpham", xuatKhoController.getLoaiSanPhamData);
+
+    //chua add role
     router.get("/xuatnhap/tongquan/dudoansoluong", xuatKhoController.predictSL);
+    router.get("/xuatnhap/tongquan/dudoansanpham", xuatKhoController.predictSP);
 
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);
