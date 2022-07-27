@@ -12,7 +12,7 @@ const hashPassword = (password) => {
 const getAllUser = async () => {
     try {
         let user = await db.NhanVien.findAll({
-            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
+            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata', 'Facebook', 'Zalo'],
 
         });
 
@@ -43,7 +43,7 @@ const getAllUser = async () => {
 const getUser = async (rawdata) => {
     try {
         let user = await db.NhanVien.findOne({
-            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata'],
+            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata', 'Facebook', 'Zalo'],
             where: { id: rawdata.id },
             include: { model: db.Group, attributes: ['Name'] },
         });

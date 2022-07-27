@@ -60,6 +60,12 @@ module.exports = {
       Avata: {
         type: Sequelize.STRING
       },
+      Facebook: {
+        type: Sequelize.STRING
+      },
+      Zalo: {
+        type: Sequelize.STRING(10)
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
