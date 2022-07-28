@@ -197,7 +197,7 @@ const notify = async () => {
 
         //Find products that have expired.
         let hetHSD = await db.Khohang.findAll({
-            attributes: ['SanPhamId', 'NSX', 'HSD', [sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong']],
+            attributes: ['SanPhamId', 'NSX', 'HSD', [sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'ViTri'],
             where: { SoLuong: { [Op.gt]: 0 }, HSD: { [Op.lte]: day } },
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
             group: ['SanPhamId'],
@@ -223,19 +223,20 @@ const notify = async () => {
             date = date.subDays(day, minDate[i].LoaiSanPham.MinDate);
 
             let sapHetHSD = await db.Khohang.findAll({
-                attributes: ['SanPhamId', 'NSX', 'HSD', [sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong']],
+                attributes: ['SanPhamId', 'NSX', 'HSD', [sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'ViTri'],
                 where: { SanPhamId: minDate[i].id, SoLuong: { [Op.gt]: 0 }, HSD: date },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
                 group: ['SanPhamId'],
             });
 
             let obj = {
-                AddData: function (SanPhamId, NSX, HSD, SoLuong, SanPham) {
+                AddData: function (SanPhamId, NSX, HSD, SoLuong, SanPham, ViTri) {
                     this.SanPhamId = SanPhamId;
                     this.NSX = NSX;
                     this.HSD = HSD;
                     this.SoLuong = SoLuong;
                     this.SanPham = SanPham;
+                    this.ViTri = ViTri;
                 }
             };
 
@@ -246,6 +247,7 @@ const notify = async () => {
                     obj.HSD = sapHetHSD[i].HSD;
                     obj.SoLuong = sapHetHSD[i].SoLuong;
                     obj.SanPham = sapHetHSD[i].SanPham;
+                    obj.ViTri = sapHetHSD[i].ViTri;
                 }
                 listSapHet.push(obj);
             }
@@ -256,7 +258,7 @@ const notify = async () => {
         //Find products that need to be added
 
         let getSoLuong = await db.Khohang.findAll({
-            attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId',],
+            attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId', 'ViTri'],
             where: { SoLuong: { [Op.gt]: 0 }, HSD: { [Op.gt]: day } },
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
             group: 'SanPhamId',

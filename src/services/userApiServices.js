@@ -12,7 +12,7 @@ const hashPassword = (password) => {
 const getAllUser = async () => {
     try {
         let user = await db.NhanVien.findAll({
-            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata', 'Facebook', 'Zalo'],
+            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'CCCD', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata', 'Facebook', 'Zalo'],
 
         });
 

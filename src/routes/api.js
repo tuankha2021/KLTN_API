@@ -54,6 +54,7 @@ const initApiRoutes = (app) => {
     router.get("/xuatnhap/tongquan/dudoansoluong", xuatKhoController.predictSL);
     router.get("/xuatnhap/tongquan/dudoansanpham", xuatKhoController.predictSP);
     router.get("/thongbao", khoHangController.notify);
+    router.post("/nhaphang", nhapKhoController.importData);
 
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);
