@@ -29,6 +29,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(10)
       },
+      CCCD: {
+        allowNull: false,
+        type: Sequelize.STRING(12)
+      },
       Email: {
         type: Sequelize.STRING
       },
