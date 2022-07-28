@@ -40,7 +40,7 @@ const initApiRoutes = (app) => {
     router.get("/khohang/tongquan/chitiet", khoHangController.getSanPham);
 
     router.get("/xuatnhap/nhapkho/admin", nhapKhoController.getAllData);
-    router.get("/xuatnhap/nhapkho/user", nhapKhoController.getUserData);
+    router.post("/xuatnhap/nhapkho/user", nhapKhoController.getUserData);
     router.get("/xuatnhap/xuatkho/admin", xuatKhoController.getAllData);
     router.get("/xuatnhap/xuatkho/user", xuatKhoController.getUserData);
 
@@ -53,6 +53,7 @@ const initApiRoutes = (app) => {
     //chua add role
     router.get("/xuatnhap/tongquan/dudoansoluong", xuatKhoController.predictSL);
     router.get("/xuatnhap/tongquan/dudoansanpham", xuatKhoController.predictSP);
+    router.get("/thongbao", khoHangController.notify);
 
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);

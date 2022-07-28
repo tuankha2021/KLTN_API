@@ -35,6 +35,14 @@ module.exports = {
       ThanhTien: {
         type: Sequelize.INTEGER
       },
+      GhiChu: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      BarCode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

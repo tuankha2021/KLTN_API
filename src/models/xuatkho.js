@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     NSX: DataTypes.DATEONLY,
     HSD: DataTypes.DATEONLY,
     ThanhTien: DataTypes.INTEGER,
-    GhiChu: DataTypes.STRING
+    GhiChu: DataTypes.STRING,
+    BarCode: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'XuatKho',

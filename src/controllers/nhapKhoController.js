@@ -23,7 +23,7 @@ const getAllData = async (req, res) => {
 const getUserData = async (req, res) => {
     try {
 
-        let data = await nhapKhoServices.getUserData();
+        let data = await nhapKhoServices.getUserData(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message

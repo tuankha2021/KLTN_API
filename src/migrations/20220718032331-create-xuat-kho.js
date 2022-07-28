@@ -48,6 +48,9 @@ module.exports = {
       GhiChu: {
         type: Sequelize.STRING
       },
+      BarCode: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
