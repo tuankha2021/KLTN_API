@@ -338,11 +338,11 @@ const notify = async () => {
 const findSanPham = async (rawdata) => {
     try {
         let findValue = rawdata.findValue;
-        console.log("check findValue: ", findValue)
+
 
         if (findValue.NSX != '') {
             let getKhoNSX = await db.Khohang.findOne({
-                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri','LoaiSanPhamId'],
+                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri', 'LoaiSanPhamId'],
                 where: { NSX: findValue.NSX, SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
             })
@@ -369,7 +369,7 @@ const findSanPham = async (rawdata) => {
 
         if (findValue.NSX === '') {
             let dataKhoHang = await db.Khohang.findAll({
-                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri','LoaiSanPhamId'],
+                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri', 'LoaiSanPhamId'],
                 where: { SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
                 order: [['NSX', 'ASC']]
@@ -378,39 +378,34 @@ const findSanPham = async (rawdata) => {
             let data = [];
             let i = 0;
             while (findValue.SoLuong != 0) {
-                console.log("i: ", i, " findSL: ", findValue.SoLuong)
-                if(dataKhoHang[i]){
-                    if (parseInt(dataKhoHang[i].SoLuong) <= parseInt(findValue.SoLuong)) {
-                        console.log(">>> ton <= xuat: ", dataKhoHang[i])
+                if (dataKhoHang[i]) {
+                    if (dataKhoHang[i].SoLuong <= findValue.SoLuong) {
                         data.push(dataKhoHang[i]);
-                        findValue.SoLuong = parseInt(findValue.SoLuong) - parseInt(dataKhoHang[i].SoLuong)
-                        console.log(">>> xuat: ", findValue.SoLuong)
+                        findValue.SoLuong = findValue.SoLuong - dataKhoHang[i].SoLuong
                     } else {
-                        if (parseInt(dataKhoHang[i].SoLuong) > parseInt(findValue.SoLuong)) {
-                            console.log(">>>>> ton > xuat SL: ", findValue.SoLuong)
+                        if (dataKhoHang[i].SoLuong > findValue.SoLuong) {
                             dataKhoHang[i].SoLuong = findValue.SoLuong;
-                            console.log(">>> ton > xuat: ", dataKhoHang[i])
                             findValue.SoLuong = 0;
                             data.push(dataKhoHang[i]);
                         }
                     }
-                    return {
-                        EM: "",
-                        EC: 0,
-                        DT: data
-                    }
-                }else{
+                } else {
                     return {
                         EM: "Số lượng tồn không đủ yêu cầu.",
                         EC: 1,
                         DT: data
                     }
                 }
-                
+
                 i = i + 1;
             }
             console.log("check data: ", data);
-            
+            return {
+                EM: "",
+                EC: 0,
+                DT: data
+            }
+
         }
 
     } catch (error) {
@@ -425,18 +420,17 @@ const findSanPham = async (rawdata) => {
 
 const xuatHang = async (rawData) => {
     try {
-        console.log (">>>> rawdata: ", rawData)
         let thongtin = rawData.ttXuatHang;
         let dataValue = rawData.listXuatHang;
 
-        for (let i in dataValue){
+        for (let i in dataValue) {
 
             //update table khohang
             let khohang = await db.Khohang.findOne({
-                where:{id:dataValue[i].idKho}
+                where: { id: dataValue[i].idKho }
             })
 
-            if(khohang){
+            if (khohang) {
                 let flat = parseInt(khohang.SoLuong) - parseInt(dataValue[i].SoLuong);
                 await khohang.update({
                     SoLuong: flat
@@ -444,17 +438,17 @@ const xuatHang = async (rawData) => {
             }
 
             // add table xuatkho
-            
+
             await db.XuatKho.create({
                 NgayXuat: new Date(),
                 NhanVienId: thongtin.NhanVienId,
                 NVGiaoHang: thongtin.NVGiaoHang,
-                BenNhan:thongtin.BenNhan,
-                LoaiSanPhamId:dataValue[i].LoaiSanPhamId,
-                SanPhamId:dataValue[i].SanPhamId,
-                SoLuong:dataValue[i].SoLuong,
-                NSX:dataValue[i].NSX,
-                HSD:dataValue[i].HSD
+                BenNhan: thongtin.BenNhan,
+                LoaiSanPhamId: dataValue[i].LoaiSanPhamId,
+                SanPhamId: dataValue[i].SanPhamId,
+                SoLuong: dataValue[i].SoLuong,
+                NSX: dataValue[i].NSX,
+                HSD: dataValue[i].HSD
             })
 
             return {
