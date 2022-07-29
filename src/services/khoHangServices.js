@@ -1,6 +1,7 @@
 import db from "../models/index";
 import { Op } from 'sequelize';
 import sequelize from "sequelize";
+import { raw } from "body-parser";
 
 const getLoaiSanPham = async () => {
     try {
@@ -334,28 +335,14 @@ const notify = async () => {
     }
 }
 
-const xuatHang = async (rawdata) => {
+const findSanPham = async (rawdata) => {
     try {
         let findValue = rawdata.findValue;
         console.log("check findValue: ", findValue)
 
-        // let findValue = {
-        //     AddData: function (LoaiSanPhamId, SanPhamId, NSX, SoLuong) {
-        //         this.LoaiSanPhamId = LoaiSanPhamId;
-        //         this.SanPhamId = SanPhamId;
-        //         this.NSX = NSX;
-        //         this.SoLuong = SoLuong
-        //     }
-        // };
-
-        // findValue.LoaiSanPhamId = "BD";
-        // findValue.SanPhamId = "BD01";
-        // findValue.NSX = "2022/06/16";
-        // findValue.SoLuong = 100;
-
         if (findValue.NSX != '') {
             let getKhoNSX = await db.Khohang.findOne({
-                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
+                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri','LoaiSanPhamId'],
                 where: { NSX: findValue.NSX, SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
             })
@@ -363,7 +350,7 @@ const xuatHang = async (rawdata) => {
                 if (parseInt(getKhoNSX.SoLuong) < parseInt(findValue.SoLuong)) {
                     let flat = parseInt(findValue.SoLuong) - parseInt(getKhoNSX.SoLuong);
                     return {
-                        EM: "Số lượng tồn không đủ yêu cầu. Còn thiếu ",
+                        EM: "Số lượng tồn không đủ yêu cầu.",
                         EC: 1,
                         DT: getKhoNSX
                     }
@@ -382,7 +369,7 @@ const xuatHang = async (rawdata) => {
 
         if (findValue.NSX === '') {
             let dataKhoHang = await db.Khohang.findAll({
-                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
+                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri','LoaiSanPhamId'],
                 where: { SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
                 order: [['NSX', 'ASC']]
@@ -392,28 +379,38 @@ const xuatHang = async (rawdata) => {
             let i = 0;
             while (findValue.SoLuong != 0) {
                 console.log("i: ", i, " findSL: ", findValue.SoLuong)
-                if (parseInt(dataKhoHang[i].SoLuong) <= parseInt(findValue.SoLuong)) {
-                    console.log(">>> ton <= xuat: ", dataKhoHang[i])
-                    data.push(dataKhoHang[i]);
-                    findValue.SoLuong = parseInt(findValue.SoLuong) - parseInt(dataKhoHang[i].SoLuong)
-                    console.log(">>> xuat: ", findValue.SoLuong)
-                } else {
-                    if (parseInt(dataKhoHang[i].SoLuong) > parseInt(findValue.SoLuong)) {
-                        console.log(">>>>> ton > xuat SL: ", findValue.SoLuong)
-                        dataKhoHang[i].SoLuong = findValue.SoLuong;
-                        console.log(">>> ton > xuat: ", dataKhoHang[i])
-                        findValue.SoLuong = 0;
+                if(dataKhoHang[i]){
+                    if (parseInt(dataKhoHang[i].SoLuong) <= parseInt(findValue.SoLuong)) {
+                        console.log(">>> ton <= xuat: ", dataKhoHang[i])
                         data.push(dataKhoHang[i]);
+                        findValue.SoLuong = parseInt(findValue.SoLuong) - parseInt(dataKhoHang[i].SoLuong)
+                        console.log(">>> xuat: ", findValue.SoLuong)
+                    } else {
+                        if (parseInt(dataKhoHang[i].SoLuong) > parseInt(findValue.SoLuong)) {
+                            console.log(">>>>> ton > xuat SL: ", findValue.SoLuong)
+                            dataKhoHang[i].SoLuong = findValue.SoLuong;
+                            console.log(">>> ton > xuat: ", dataKhoHang[i])
+                            findValue.SoLuong = 0;
+                            data.push(dataKhoHang[i]);
+                        }
+                    }
+                    return {
+                        EM: "",
+                        EC: 0,
+                        DT: data
+                    }
+                }else{
+                    return {
+                        EM: "Số lượng tồn không đủ yêu cầu.",
+                        EC: 1,
+                        DT: data
                     }
                 }
+                
                 i = i + 1;
             }
             console.log("check data: ", data);
-            return {
-                EM: "",
-                EC: 0,
-                DT: data
-            }
+            
         }
 
     } catch (error) {
@@ -426,7 +423,58 @@ const xuatHang = async (rawdata) => {
     }
 }
 
+const xuatHang = async (rawData) => {
+    try {
+        console.log (">>>> rawdata: ", rawData)
+        let thongtin = rawData.ttXuatHang;
+        let dataValue = rawData.listXuatHang;
+
+        for (let i in dataValue){
+
+            //update table khohang
+            let khohang = await db.Khohang.findOne({
+                where:{id:dataValue[i].idKho}
+            })
+
+            if(khohang){
+                let flat = parseInt(khohang.SoLuong) - parseInt(dataValue[i].SoLuong);
+                await khohang.update({
+                    SoLuong: flat
+                })
+            }
+
+            // add table xuatkho
+            
+            await db.XuatKho.create({
+                NgayXuat: new Date(),
+                NhanVienId: thongtin.NhanVienId,
+                NVGiaoHang: thongtin.NVGiaoHang,
+                BenNhan:thongtin.BenNhan,
+                LoaiSanPhamId:dataValue[i].LoaiSanPhamId,
+                SanPhamId:dataValue[i].SanPhamId,
+                SoLuong:dataValue[i].SoLuong,
+                NSX:dataValue[i].NSX,
+                HSD:dataValue[i].HSD
+            })
+
+            return {
+                EM: "Thông tin đã được lưu vào hệ thống",
+                EC: 0,
+                DT: []
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: "something wrongs with services",
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
 
 module.exports = {
-    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, xuatHang
+    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, findSanPham, xuatHang
 }
