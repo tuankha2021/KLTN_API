@@ -40,7 +40,7 @@ const getUserData = async (rawdata) => {
             attributes: ['SanPhamId', 'SoLuong', 'NSX', 'HSD', 'ThanhTien', 'createdAt', 'GhiChu'],
             include: [{ model: db.NhanVien, attributes: ['HoTen'] }, { model: db.SanPham, attributes: ['TenSanPham'] }],
             where: { NhanVienId: rawdata.id },
-            other: ['createdAt', 'DESC']
+            order: ['createdAt', 'DESC']
 
         });
 

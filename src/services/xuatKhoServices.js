@@ -34,13 +34,13 @@ const getAllData = async () => {
     }
 }
 
-const getUserData = async (idNhanVien) => {
+const getUserData = async (rawdata) => {
     try {
-        idNhanVien = "NVK171201"
         let user = await db.XuatKho.findAll({
             attributes: [],
             include: [{ model: db.NhanVien, attributes: ['HoTen'] }, { model: db.SanPham, attributes: ['TenSanPham'] }],
-            where: { NhanVienId: idNhanVien }
+            where: { NhanVienId: rawdata.id },
+            order: ['NgayXuat', 'DESC']
 
         });
 

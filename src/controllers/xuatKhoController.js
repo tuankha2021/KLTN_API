@@ -23,7 +23,7 @@ const getAllData = async (req, res) => {
 const getUserData = async (req, res) => {
     try {
 
-        let data = await xuatKhoServices.getUserData();
+        let data = await xuatKhoServices.getUserData(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
