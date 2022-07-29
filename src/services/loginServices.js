@@ -54,7 +54,7 @@ const handleUserLogin = async (rawData) => {
         }
 
         console.log(">>> pass: ", hashPassword("Admin123456"))
-        console.log(">>> check pass: ", checkPassword("Admin123456", "$2a$10$Yqe34RxYfdJkaWsGXWdj7ukD.3lXGwNqm6A9EPqjXOF5DVqfjngvm"))
+        console.log(">>> check pass: ", checkPassword("Admin123456", "$2a$10$dSSSbWN4gDttyw.cQ03HA.a8j3Pj6sCdzDxznmJHu8CB6izlxvNAi"))
         console.log(">>> Not found MaNhanVien: ", rawData.idNhanVien, " or Password: ", rawData.password);
         return {
             EM: 'ID nhân viên hoặc mật khẩu không chính xác !',
