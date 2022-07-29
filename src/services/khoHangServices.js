@@ -334,7 +334,99 @@ const notify = async () => {
     }
 }
 
+const xuatHang = async (rawdata) => {
+    try {
+        let findValue = rawdata.findValue;
+        console.log("check findValue: ", findValue)
+
+        // let findValue = {
+        //     AddData: function (LoaiSanPhamId, SanPhamId, NSX, SoLuong) {
+        //         this.LoaiSanPhamId = LoaiSanPhamId;
+        //         this.SanPhamId = SanPhamId;
+        //         this.NSX = NSX;
+        //         this.SoLuong = SoLuong
+        //     }
+        // };
+
+        // findValue.LoaiSanPhamId = "BD";
+        // findValue.SanPhamId = "BD01";
+        // findValue.NSX = "2022/06/16";
+        // findValue.SoLuong = 100;
+
+        if (findValue.NSX != '') {
+            let getKhoNSX = await db.Khohang.findOne({
+                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
+                where: { NSX: findValue.NSX, SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
+                include: { model: db.SanPham, attributes: ['TenSanPham'] },
+            })
+            if (getKhoNSX) {
+                if (parseInt(getKhoNSX.SoLuong) < parseInt(findValue.SoLuong)) {
+                    let flat = parseInt(findValue.SoLuong) - parseInt(getKhoNSX.SoLuong);
+                    return {
+                        EM: "Số lượng tồn không đủ yêu cầu. Còn thiếu ",
+                        EC: 1,
+                        DT: getKhoNSX
+                    }
+                }
+
+                if (parseInt(getKhoNSX.SoLuong) >= parseInt(findValue.SoLuong)) {
+                    getKhoNSX.SoLuong = findValue.SoLuong;
+                    return {
+                        EM: "",
+                        EC: 0,
+                        DT: getKhoNSX
+                    }
+                }
+            }
+        }
+
+        if (findValue.NSX === '') {
+            let dataKhoHang = await db.Khohang.findAll({
+                attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
+                where: { SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
+                include: { model: db.SanPham, attributes: ['TenSanPham'] },
+                order: [['NSX', 'ASC']]
+            })
+
+            let data = [];
+            let i = 0;
+            while (findValue.SoLuong != 0) {
+                console.log("i: ", i, " findSL: ", findValue.SoLuong)
+                if (parseInt(dataKhoHang[i].SoLuong) <= parseInt(findValue.SoLuong)) {
+                    console.log(">>> ton <= xuat: ", dataKhoHang[i])
+                    data.push(dataKhoHang[i]);
+                    findValue.SoLuong = parseInt(findValue.SoLuong) - parseInt(dataKhoHang[i].SoLuong)
+                    console.log(">>> xuat: ", findValue.SoLuong)
+                } else {
+                    if (parseInt(dataKhoHang[i].SoLuong) > parseInt(findValue.SoLuong)) {
+                        console.log(">>>>> ton > xuat SL: ", findValue.SoLuong)
+                        dataKhoHang[i].SoLuong = findValue.SoLuong;
+                        console.log(">>> ton > xuat: ", dataKhoHang[i])
+                        findValue.SoLuong = 0;
+                        data.push(dataKhoHang[i]);
+                    }
+                }
+                i = i + 1;
+            }
+            console.log("check data: ", data);
+            return {
+                EM: "",
+                EC: 0,
+                DT: data
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: "something wrongs with services",
+            EC: -1,
+            DT: []
+        }
+    }
+}
+
 
 module.exports = {
-    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify
+    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, xuatHang
 }
