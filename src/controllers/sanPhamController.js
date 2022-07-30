@@ -23,7 +23,7 @@ const getAllSP = async (req, res) => {
 const createSanPham = async (req, res) => {
     try {
 
-        let data = await sanPhamServices.createSanPham();
+        let data = await sanPhamServices.createSanPham(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
