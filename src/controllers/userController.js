@@ -42,9 +42,10 @@ const readOneFunc = async (req, res) => {
 
 const createFunc = async (req, res) => {
     try {
-
+        console.log(">>> check data: ", req.body);
         //validate on server
-        if (!req.body.MaNhanVien || !req.body.HoTen || !req.body.GioiTinh || !req.body.Tel || !req.body.NgaySinh || !req.body.address || !req.body.Password) {
+        if (!req.body.userValue.ID || !req.body.userValue.HoTen || !req.body.userValue.GioiTinh || !req.body.userValue.Tel || !req.body.userValue.Password || !req.body.userValue.CCCD) {
+            console.log(">>> check controller")
             return res.status(200).json({
                 EM: 'Thông tin truyền vào không đầy đủ !', // error message
                 EC: '1', // error code
@@ -52,7 +53,8 @@ const createFunc = async (req, res) => {
             })
         }
 
-        if (req.body.Password && req.body.Password.length < 6) {
+        if (req.body.userValue.Password && req.body.userValue.Password.length < 6) {
+            console.log(">>> check controller")
             return res.status(200).json({
                 EM: 'Mật khẩu chứ ít nhất 6 ký tự !', // error message
                 EC: '1', // error code

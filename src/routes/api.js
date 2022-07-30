@@ -30,7 +30,7 @@ const initApiRoutes = (app) => {
     router.post("/user/shows", userController.readOneFunc);
     router.post("/user/create", userController.createFunc);
     router.put("/user/update", userController.updateFunc);
-    router.delete("user/delete", userController.deleteFunc);
+    // router.delete("user/delete", userController.deleteFunc);
 
     router.get("/sanpham/show", sanPhamController.getAllSP);
 

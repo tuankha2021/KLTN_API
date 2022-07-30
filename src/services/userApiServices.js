@@ -103,25 +103,29 @@ const checkUserPhoneExist = async (userphone) => {
     return false;
 }
 
-const createNewUser = async (data) => {
+const createNewUser = async (rawdata) => {
     try {
+        let data = rawdata.userValue;
+        console.log(">>> check services: ", data)
         //check data are exist
-        let isUserIdExist = await checkUserIdExist(data.MaNhanVien);
+        let isUserIdExist = await checkUserIdExist(data.ID);
         if (isUserIdExist === true) {
+            console.log(">>> check services")
             return {
                 EM: 'Nhân viên đã tồn tại !',
                 EC: '1'
             }
         }
-        let isUserEmailExist = await checkUserEmailExist(data.Email);
-        if (isUserEmailExist === true) {
-            return {
-                EM: 'Email đã được đăng ký!',
-                EC: '1'
-            }
-        }
+        // let isUserEmailExist = await checkUserEmailExist(data.Email);
+        // if (isUserEmailExist === true) {
+        //     return {
+        //         EM: 'Email đã được đăng ký!',
+        //         EC: '1'
+        //     }
+        // }
         let isUserPhoneExist = await checkUserPhoneExist(data.Tel);
         if (isUserPhoneExist === true) {
+            console.log(">>> check services")
             return {
                 EM: 'Số điện thoại đã được đăng ký !',
                 EC: '1'
@@ -130,20 +134,24 @@ const createNewUser = async (data) => {
 
         // hash password
         let password = hashPassword(data.Password);
-
+        console.log(">>> check services id", data.ID)
         // create new user
         await db.NhanVien.create({
-            NhanVienId: data.MaNhanVien,
+            id: data.ID,
             GroupId: data.Level,
             HoTen: data.HoTen,
             NgaySinh: data.NgaySinh,
             GioiTinh: data.GioiTinh,
             Tel: data.Tel,
             Email: data.Email,
-            Address: data.Address,
+            Address: data.DiaChi,
             NgayVaoLam: data.NgayVaoLam,
             Password: password,
-            Avata: data.Avata
+            Avata: data.Avata,
+            DanhGia: data.GhiChu,
+            Facebook: data.Facebook,
+            Zalo: data.Zalo,
+            CCCD: data.CCCD,
         })
 
         return {
@@ -152,6 +160,7 @@ const createNewUser = async (data) => {
         }
 
     } catch (error) {
+        console.log(error);
         return {
             EM: "something wrongs with services",
             EC: 1,
