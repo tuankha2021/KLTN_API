@@ -33,6 +33,8 @@ const initApiRoutes = (app) => {
     // router.delete("user/delete", userController.deleteFunc);
 
     router.get("/sanpham/show", sanPhamController.getAllSP);
+    router.post("/sanpham/create", sanPhamController.createSanPham);
+
 
     router.get("/khohang/tongquan/loaisanpham", khoHangController.getLoaiSanPham);
     router.get("/khohang/tongquan/piechartdata", khoHangController.getPieChartData);
