@@ -42,7 +42,7 @@ const getUserData = async (req, res) => {
 
 const getLoaiSPLineChart = async (req, res) => {
     try {
-        let data = await xuatKhoServices.getLoaiSPLineChart();
+        let data = await xuatKhoServices.getLoaiSPLineChart(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -62,7 +62,7 @@ const getLoaiSPLineChart = async (req, res) => {
 const getLoaiSPLineCharts = async (req, res) => {
     try {
 
-        let data = await xuatKhoServices.getLoaiSPLineCharts();
+        let data = await xuatKhoServices.getLoaiSPLineCharts(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -82,7 +82,7 @@ const getLoaiSPLineCharts = async (req, res) => {
 const getSPLineChart = async (req, res) => {
     try {
 
-        let data = await xuatKhoServices.getSPLineChart();
+        let data = await xuatKhoServices.getSPLineChart(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -102,7 +102,7 @@ const getSPLineChart = async (req, res) => {
 const getSPLineCharts = async (req, res) => {
     try {
 
-        let data = await xuatKhoServices.getSPLineChart();
+        let data = await xuatKhoServices.getSPLineCharts(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -122,7 +122,7 @@ const getSPLineCharts = async (req, res) => {
 const getLoaiSanPhamData = async (req, res) => {
     try {
 
-        let data = await xuatKhoServices.getLoaiSanPhamData();
+        let data = await xuatKhoServices.getLoaiSanPhamData(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message

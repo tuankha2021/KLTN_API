@@ -68,10 +68,12 @@ const getUserData = async (rawdata) => {
     }
 }
 
-const getLoaiSPLineChart = async (days) => {
+const getLoaiSPLineChart = async (rawdata) => {
     try {
-        days = 14
+        let days = rawdata.days
         let day = '2022/6/18'
+
+        console.log(">>>>>>>>>>>>>>>> check days: ", rawdata);
         // get today
         // let date = new Date(this.valueOf());
         Date.prototype.subDays = function (day, days) {
@@ -167,9 +169,10 @@ const getLoaiSPLineChart = async (days) => {
     }
 }
 
-const getLoaiSPLineCharts = async (days) => {
+const getLoaiSPLineCharts = async (rawdata) => {
     try {
-        days = 35
+        console.log(">>>>>>>>>>>>>>>> check days: ", rawdata);
+        let days = rawdata.days
         let today = new Date();
         today = '2022/6/18'
         // get today
@@ -283,10 +286,10 @@ const getLoaiSPLineCharts = async (days) => {
     }
 }
 
-const getSPLineChart = async (MaLoai, days) => {
+const getSPLineChart = async (rawdata) => {
     try {
-        days = 14;
-        MaLoai = 'RC'
+        let days = rawdata.days;
+        let MaLoai = rawdata.MaLoai;
         let day = '2022/6/18'
         // get today
         // let date = new Date(this.valueOf());
@@ -383,10 +386,10 @@ const getSPLineChart = async (MaLoai, days) => {
     }
 }
 
-const getSPLineCharts = async (MaLoai, days) => {
+const getSPLineCharts = async (rawdata) => {
     try {
-        days = 35;
-        MaLoai = 'F'
+        let days = rawdata.days;
+        let MaLoai = rawdata.MaLoai;
         let today = '2022/6/18'
         // get today
         // let date = new Date(this.valueOf());
@@ -492,10 +495,10 @@ const getSPLineCharts = async (MaLoai, days) => {
     }
 }
 
-const getLoaiSanPhamData = async (days) => {
+const getLoaiSanPhamData = async (rawdata) => {
     try {
-
-        days = 14
+        console.log(">>>>> check data: ", rawdata)
+        let days = rawdata.days
         let day = '2022/6/18'
         // get today
         // let date = new Date(this.valueOf());
