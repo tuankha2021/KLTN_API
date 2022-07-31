@@ -32,6 +32,17 @@ module.exports = {
       { GroupId: '1', RoleId: '20', },
       { GroupId: '1', RoleId: '21', },
       { GroupId: '1', RoleId: '22', },
+      { GroupId: '1', RoleId: '25', },
+      { GroupId: '1', RoleId: '26', },
+      { GroupId: '1', RoleId: '27', },
+      { GroupId: '1', RoleId: '28', },
+      { GroupId: '2', RoleId: '23', },
+      { GroupId: '2', RoleId: '24', },
+      { GroupId: '2', RoleId: '25', },
+      { GroupId: '2', RoleId: '26', },
+      { GroupId: '2', RoleId: '27', },
+      { GroupId: '2', RoleId: '28', },
+      { GroupId: '2', RoleId: '29', },
     ], {});
 
   },

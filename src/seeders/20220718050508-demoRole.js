@@ -26,6 +26,13 @@ module.exports = {
       { id: '20', Url: '/select/sanpham', Description: 'Data select sản phẩm', },
       { id: '21', Url: '/select/loaisanpham', Description: 'Data select loại sản phẩm', },
       { id: '22', Url: '/select/group', Description: 'Data select chức vụ nhân viên', },
+      { id: '23', Url: '/xuatnhap/tongquan/dudoansoluong', Description: 'nan', },
+      { id: '24', Url: '/xuatnhap/tongquan/dudoansanpham', Description: 'nan', },
+      { id: '25', Url: '/thongbao', Description: 'nan', },
+      { id: '26', Url: '/nhaphang', Description: 'nan', },
+      { id: '27', Url: '/xuathang/getdata', Description: 'nan', },
+      { id: '28', Url: '/xuathang', Description: 'nan', },
+      { id: '29', Url: '/sanpham/create', Description: 'nan', },
     ], {});
 
   },
