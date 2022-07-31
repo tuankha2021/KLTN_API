@@ -73,7 +73,6 @@ const getLoaiSPLineChart = async (rawdata) => {
         let days = rawdata.days
         let day = '2022/6/18'
 
-        console.log(">>>>>>>>>>>>>>>> check days: ", rawdata);
         // get today
         // let date = new Date(this.valueOf());
         Date.prototype.subDays = function (day, days) {
@@ -171,7 +170,6 @@ const getLoaiSPLineChart = async (rawdata) => {
 
 const getLoaiSPLineCharts = async (rawdata) => {
     try {
-        console.log(">>>>>>>>>>>>>>>> check days: ", rawdata);
         let days = rawdata.days
         let today = new Date();
         today = '2022/6/18'
@@ -497,7 +495,6 @@ const getSPLineCharts = async (rawdata) => {
 
 const getLoaiSanPhamData = async (rawdata) => {
     try {
-        console.log(">>>>> check data: ", rawdata)
         let days = rawdata.days
         let day = '2022/6/18'
         // get today
