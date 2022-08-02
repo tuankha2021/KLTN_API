@@ -9,7 +9,7 @@ import khoHangController from "../controllers/khoHangController";
 import nhapKhoController from "../controllers/nhapKhoController";
 import xuatKhoController from "../controllers/xuatKhoController";
 import selectController from "../controllers/secectController";
-import resportController from "../controllers/resportController";
+import reportController from "../controllers/reportController";
 const router = express.Router();
 
 // const checkUser = (req, res, next) => {
@@ -22,7 +22,7 @@ const router = express.Router();
 
 const initApiRoutes = (app) => {
 
-    router.all('*', checkUserCookies, checkUserPermission,);
+    // router.all('*', checkUserCookies, checkUserPermission,);
 
     router.post("/login", apiController.onSubmitLogin);
     //  user CRUD 
@@ -60,7 +60,7 @@ const initApiRoutes = (app) => {
     router.post("/xuathang/getdata", khoHangController.findSanPham);
     router.post("/xuathang", khoHangController.xuatHang);
 
-    router.get("/baocao", resportController.resport);
+    router.get("/baocao", reportController.resport);
 
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);

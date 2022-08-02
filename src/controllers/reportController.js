@@ -1,9 +1,9 @@
-import resportServices from "../services/resportServices";
+import reportServices from "../services/reportServices";
 
 const resport = async (req, res) => {
     try {
 
-        let data = await resportServices.resport();
+        let data = await reportServices.resport();
 
         return res.status(200).json({
             EM: data.EM, // error message
