@@ -63,7 +63,7 @@ const getPieChartData = async (req, res) => {
 const getSanPham = async (req, res) => {
     try {
 
-        let data = await khoHangServices.getSanPham();
+        let data = await khoHangServices.getSanPham(req.body);
 
         return res.status(200).json({
             EM: data.EM, // error message
@@ -140,6 +140,26 @@ const xuatHang = async (req, res) => {
     }
 }
 
+const search = async (req, res) => {
+    try {
+
+        let data = await khoHangServices.search(req.body);
+
+        return res.status(200).json({
+            EM: data.EM, // error message
+            EC: data.EC, // error code
+            DT: data.DT // data
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).Json({
+            EM: 'error from server . . .', // error message
+            EC: '-1', // error code
+            DT: '' // data
+        })
+    }
+}
+
 module.exports = {
-    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, findSanPham, xuatHang
+    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, findSanPham, xuatHang, search
 }

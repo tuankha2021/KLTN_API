@@ -1,7 +1,7 @@
 import db from "../models/index";
 import { Op } from 'sequelize';
 import sequelize from "sequelize";
-import { raw } from "body-parser";
+
 
 const getLoaiSanPham = async () => {
     try {
@@ -150,13 +150,13 @@ const getPieChartData = async () => {
     }
 }
 
-const getSanPham = async (id) => {
+const getSanPham = async (rawData) => {
     try {
-        id = 'F35';
         let data = await db.Khohang.findAll({
             attributes: ['SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
-            where: { SanPhamId: id, SoLuong: { [Op.gt]: 0 } },
+            where: { SanPhamId: rawData.SanPhamId, SoLuong: { [Op.gt]: 0 } },
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
+            order: [['NSX', 'ASC']]
         });
 
         if (data) {
@@ -468,7 +468,58 @@ const xuatHang = async (rawData) => {
     }
 }
 
+const search = async (rawData) => {
+    try {
+        let value = '';
+        let findSanPhamId = await db.SanPham.findOne({
+            attributes: ['id'],
+            where: { TenSanPham: rawData.value }
+        })
+        console.log(">>>> check findSP: ", findSanPhamId)
+        if (findSanPhamId) {
+            value = findSanPhamId.id;
+        } else { value = rawData.value }
+        console.log("check value: ", rawData.value)
+        let data = await db.Khohang.findAll({
+            attributes: ['SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
+            // where: { SanPhamId: value, SoLuong: { [Op.gt]: 0 } },
+            where: {
+                [Op.or]: [
+                    { [Op.and]: [{ SanPhamId: value }, { SoLuong: { [Op.gt]: 0 } }] },
+                    { [Op.and]: [{ SoLuong: { [Op.gt]: 0 } }, { Barcode: value }] }
+                ]
+            },
+            include: { model: db.SanPham, attributes: ['TenSanPham'] },
+            order: [['NSX', 'DESC']]
+        });
+
+        console.log(">>>>>>>>>> check data: ", data)
+
+        if (data) {
+            return {
+                EM: "get data success",
+                EC: 0,
+                DT: data
+            }
+        } else {
+            return {
+                EM: "Sản phẩm vừa nhập không có trong kho !",
+                EC: 0,
+                DT: []
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: "something wrongs with services",
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
+
 
 module.exports = {
-    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, findSanPham, xuatHang
+    getAllData, getSanPham, getLoaiSanPham, getPieChartData, notify, findSanPham, xuatHang, search
 }

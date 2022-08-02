@@ -35,11 +35,11 @@ const initApiRoutes = (app) => {
     router.get("/sanpham/show", sanPhamController.getAllSP);
     router.post("/sanpham/create", sanPhamController.createSanPham);
 
-
     router.get("/khohang/tongquan/loaisanpham", khoHangController.getLoaiSanPham);
     router.get("/khohang/tongquan/piechartdata", khoHangController.getPieChartData);
     router.post("/khohang/tongquan/danhsachsanpham", khoHangController.getAllData);
-    router.get("/khohang/tongquan/chitiet", khoHangController.getSanPham);
+    router.post("/khohang/tongquan/chitiet", khoHangController.getSanPham);
+    router.post("/khohang/search", khoHangController.search);
 
     router.get("/xuatnhap/nhapkho/admin", nhapKhoController.getAllData);
     router.post("/xuatnhap/nhapkho/user", nhapKhoController.getUserData);
@@ -59,6 +59,7 @@ const initApiRoutes = (app) => {
     router.post("/nhaphang", nhapKhoController.importData);
     router.post("/xuathang/getdata", khoHangController.findSanPham);
     router.post("/xuathang", khoHangController.xuatHang);
+
 
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);

@@ -42,10 +42,8 @@ const readOneFunc = async (req, res) => {
 
 const createFunc = async (req, res) => {
     try {
-        console.log(">>> check data: ", req.body);
         //validate on server
         if (!req.body.userValue.ID || !req.body.userValue.HoTen || !req.body.userValue.GioiTinh || !req.body.userValue.Tel || !req.body.userValue.Password || !req.body.userValue.CCCD) {
-            console.log(">>> check controller")
             return res.status(200).json({
                 EM: 'Thông tin truyền vào không đầy đủ !', // error message
                 EC: '1', // error code
@@ -54,7 +52,6 @@ const createFunc = async (req, res) => {
         }
 
         if (req.body.userValue.Password && req.body.userValue.Password.length < 6) {
-            console.log(">>> check controller")
             return res.status(200).json({
                 EM: 'Mật khẩu chứ ít nhất 6 ký tự !', // error message
                 EC: '1', // error code
@@ -81,8 +78,33 @@ const createFunc = async (req, res) => {
 
 }
 
-const updateFunc = (req, res) => {
+const updateFunc = async (req, res) => {
+    try {
+        console.log(">>>>>>>>>>>>>>>>check update controller: ", req.body)
+        // if (!req.body.userData.HoTen || !req.body.userData.GioiTinh || !req.body.userData.Tel || !req.body.userData.CCCD) {
+        //     return res.status(200).json({
+        //         EM: 'Thông tin truyền vào không đầy đủ !', // error message
+        //         EC: '1', // error code
+        //         DT: '', // data
+        //     })
+        // }
+        console.log("check update controller: ", req.body)
 
+        let data = await userServices.updateUser(req.body);
+
+        return res.status(200).json({
+            EM: data.EM, // error message
+            EC: data.EC, // error code
+            DT: data.DT // data
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).Json({
+            EM: 'error from server . . .', // error message
+            EC: '-1', // error code
+            DT: '' // data
+        })
+    }
 }
 
 const deleteFunc = (req, res) => {

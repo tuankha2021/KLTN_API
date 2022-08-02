@@ -43,11 +43,10 @@ const getAllUser = async () => {
 const getUser = async (rawdata) => {
     try {
         let user = await db.NhanVien.findOne({
-            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata', 'Facebook', 'Zalo'],
+            attributes: ['id', 'GroupId', 'HoTen', 'NgaySinh', 'GioiTinh', 'Tel', 'Email', 'Address', 'TrangThai', 'NgayVaoLam', 'NgayNghi', 'Vang', 'DanhGia', 'Avata', 'Facebook', 'Zalo', 'CCCD'],
             where: { id: rawdata.id },
             include: { model: db.Group, attributes: ['Name'] },
         });
-
         if (user) {
             // let data = user.get({ plain: true })
             return {
@@ -169,36 +168,37 @@ const createNewUser = async (rawdata) => {
     }
 }
 
-const updateUser = async (data) => {
+const updateUser = async (rawdata) => {
     try {
-
-        if (!data.Level) {
+        console.log(">>>> check rawdata: ", rawdata)
+        if (rawdata.GroupId === 0) {
             return {
-                EM: "Eror with empty Level ",
+                EM: "Vui lòng chọn chức vụ nhân viên.",
                 EC: 1,
                 DT: []
             }
         }
 
         let user = await db.NhanVien.findOne({
-            where: { id: data.id }
+            where: { id: rawdata.userData.id }
         })
 
         if (user) {
             // update
             await user.update({
-                GroupId: data.Level,
-                HoTen: data.HoTen,
-                NgaySinh: data.NgaySinh,
-                GioiTinh: data.GioiTinh,
-                Tel: data.Tel,
-                Email: data.Email,
-                Address: data.Address,
-                TrangThai: data.TrangThai,
-                NgayVaoLam: data.NgayVaoLam,
-                NgayNghi: data.NgayNghi,
-                DanhGia: data.DanhGia,
-                Avata: data.Avata
+                GroupId: rawdata.userData.GroupId,
+                HoTen: rawdata.userData.HoTen,
+                NgaySinh: rawdata.userData.NgaySinh,
+                GioiTinh: rawdata.userData.GioiTinh,
+                Tel: rawdata.userData.Tel,
+                CCCD: rawdata.userData.CCCD,
+                Email: rawdata.userData.Email,
+                Address: rawdata.userData.Address,
+                // TrangThai: rawdata.TrangThai,
+                NgayVaoLam: rawdata.userData.NgayVaoLam,
+                NgayNghi: rawdata.userData.NgayNghi,
+                DanhGia: rawdata.userData.DanhGia,
+                Avata: rawdata.userData.Avata
             })
 
             return {
@@ -214,6 +214,7 @@ const updateUser = async (data) => {
             }
         }
     } catch (error) {
+        console.log(error)
         return {
             EM: "something wrongs with services",
             EC: 1,
