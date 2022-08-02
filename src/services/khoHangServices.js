@@ -473,7 +473,12 @@ const search = async (rawData) => {
         let value = '';
         let findSanPhamId = await db.SanPham.findOne({
             attributes: ['id'],
-            where: { TenSanPham: rawData.value }
+            where: {
+                [Op.or]: [
+                    { TenSanPham: rawData.value },
+                    { BarCode: rawData.value }
+                ]
+            }
         })
         console.log(">>>> check findSP: ", findSanPhamId)
         if (findSanPhamId) {

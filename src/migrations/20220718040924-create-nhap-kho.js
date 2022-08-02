@@ -43,6 +43,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      NgayNhap: {
+        allowNull: false,
+        type: Sequelize.DATEONLY
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATEONLY

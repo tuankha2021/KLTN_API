@@ -48,9 +48,10 @@ const resport = async () => {
 
             let nhapHang = await db.NhapKho.findAll({
                 attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                where: { createdAt: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                where: { NgayNhap: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
                 group: 'SanPhamId',
             })
+            console.log(">>> check SL nhap: ", nhapHang)
 
             let listSanPham = [];
             for (let j in getdata) {
@@ -74,11 +75,12 @@ const resport = async () => {
                     }
                 }
 
-                for (let k in nhapHang) {
-                    if (nhapHang[k].SanPhamId === getdata[j].SanPhamId) {
-                        spobj.SLNhap = nhapHang[k].SoLuong
+                for (let h in nhapHang) {
+                    if (nhapHang[h].SanPhamId === getdata[j].SanPhamId) {
+                        spobj.SLNhap = nhapHang[h].SoLuong
                     }
                 }
+
 
                 listSanPham.push(spobj);
             }
