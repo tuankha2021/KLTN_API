@@ -19,7 +19,7 @@ const hashPassword = (password) => {
 const handleUserLogin = async (rawData) => {
     try {
         let user = await db.NhanVien.findOne({
-            where: { id: rawData.idNhanVien }
+            where: { id: rawData.idNhanVien, Vang: '1' }
         })
 
         if (user) {

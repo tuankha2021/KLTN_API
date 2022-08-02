@@ -37,10 +37,10 @@ const getAllData = async () => {
 const getUserData = async (rawdata) => {
     try {
         let user = await db.NhapKho.findAll({
-            attributes: ['SanPhamId', 'SoLuong', 'NSX', 'HSD', 'ThanhTien', 'createdAt', 'GhiChu'],
+            attributes: ['SanPhamId', 'SoLuong', 'NSX', 'HSD', 'ThanhTien', 'NgayNhap', 'GhiChu'],
             include: [{ model: db.NhanVien, attributes: ['HoTen'] }, { model: db.SanPham, attributes: ['TenSanPham'] }],
             where: { NhanVienId: rawdata.id },
-            order: ['createdAt', 'DESC']
+            // order: ['createdAt', 'DESC']
 
         });
 

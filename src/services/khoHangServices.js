@@ -40,9 +40,10 @@ const getAllData = async (rawdata) => {
     try {
         // MaLoai = "F"
         // console.log(">>>> check ma loai: ", rawdata.MaLoai)
+        let date = "2022/06/18"
         let data = await db.Khohang.findAll({
             attributes: ['SanPhamId', [sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong']],
-            where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: rawdata.MaLoai },
+            where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: rawdata.MaLoai, HSD: { [Op.gt]: date } },
             group: 'SanPhamId',
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
         });
@@ -72,12 +73,13 @@ const getAllData = async (rawdata) => {
 
 const getPieChartData = async () => {
     // let MaLoai = 'F';
+    let date = "2022/06/18"
     try {
         let data = [];
 
         let loaiSP = await db.Khohang.findAll({
             attributes: ['LoaiSanPhamId'],
-            where: { SoLuong: { [Op.gt]: 0 } },
+            where: { SoLuong: { [Op.gt]: 0 }, HSD: { [Op.gt]: date } },
             group: 'LoaiSanPhamId',
             include: { model: db.LoaiSanPham, attributes: ['TenLoai'] },
         });
@@ -93,7 +95,7 @@ const getPieChartData = async () => {
             };
             let getdata = await db.Khohang.findAll({
                 attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId, HSD: { [Op.gt]: date } },
                 group: 'SanPhamId',
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
             });
@@ -152,9 +154,10 @@ const getPieChartData = async () => {
 
 const getSanPham = async (rawData) => {
     try {
+        let date = "2022/06/18"
         let data = await db.Khohang.findAll({
             attributes: ['SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
-            where: { SanPhamId: rawData.SanPhamId, SoLuong: { [Op.gt]: 0 } },
+            where: { SanPhamId: rawData.SanPhamId, SoLuong: { [Op.gt]: 0 }, HSD: { [Op.gt]: date } },
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
             order: [['NSX', 'ASC']]
         });
@@ -337,13 +340,14 @@ const notify = async () => {
 
 const findSanPham = async (rawdata) => {
     try {
+        let date = "2022/6/18"
         let findValue = rawdata.findValue;
 
 
         if (findValue.NSX != '') {
             let getKhoNSX = await db.Khohang.findOne({
                 attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri', 'LoaiSanPhamId'],
-                where: { NSX: findValue.NSX, SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
+                where: { NSX: findValue.NSX, SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 }, HSD: { [Op.gt]: date } },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
             })
             if (getKhoNSX) {
@@ -370,7 +374,7 @@ const findSanPham = async (rawdata) => {
         if (findValue.NSX === '') {
             let dataKhoHang = await db.Khohang.findAll({
                 attributes: ['id', 'SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri', 'LoaiSanPhamId'],
-                where: { SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 } },
+                where: { SanPhamId: findValue.SanPhamId, SoLuong: { [Op.gt]: 0 }, HSD: { [Op.gt]: date } },
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
                 order: [['NSX', 'ASC']]
             })
@@ -470,6 +474,7 @@ const xuatHang = async (rawData) => {
 
 const search = async (rawData) => {
     try {
+        let date = "2022/06/18";
         let value = '';
         let findSanPhamId = await db.SanPham.findOne({
             attributes: ['id'],
@@ -480,25 +485,22 @@ const search = async (rawData) => {
                 ]
             }
         })
-        console.log(">>>> check findSP: ", findSanPhamId)
+
         if (findSanPhamId) {
             value = findSanPhamId.id;
         } else { value = rawData.value }
-        console.log("check value: ", rawData.value)
+
         let data = await db.Khohang.findAll({
             attributes: ['SanPhamId', 'NSX', 'HSD', 'SoLuong', 'ViTri'],
-            // where: { SanPhamId: value, SoLuong: { [Op.gt]: 0 } },
             where: {
                 [Op.or]: [
-                    { [Op.and]: [{ SanPhamId: value }, { SoLuong: { [Op.gt]: 0 } }] },
-                    { [Op.and]: [{ SoLuong: { [Op.gt]: 0 } }, { Barcode: value }] }
+                    { [Op.and]: [{ SanPhamId: value }, { SoLuong: { [Op.gt]: 0 } }, { HSD: { [Op.gt]: date } }] },
+                    { [Op.and]: [{ SoLuong: { [Op.gt]: 0 } }, { Barcode: value }, { HSD: { [Op.gt]: date } }] }
                 ]
             },
             include: { model: db.SanPham, attributes: ['TenSanPham'] },
             order: [['NSX', 'DESC']]
         });
-
-        console.log(">>>>>>>>>> check data: ", data)
 
         if (data) {
             return {

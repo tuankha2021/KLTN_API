@@ -35,15 +35,16 @@ const getAllData = async () => {
 }
 
 const getUserData = async (rawdata) => {
+
     try {
+        console.log(">>> check rowdata: ", rawdata)
         let user = await db.XuatKho.findAll({
-            attributes: [],
-            include: [{ model: db.NhanVien, attributes: ['HoTen'] }, { model: db.SanPham, attributes: ['TenSanPham'] }],
+            include: [{ model: db.SanPham, attributes: ['TenSanPham'] }],
             where: { NhanVienId: rawdata.id },
-            order: ['NgayXuat', 'DESC']
+            // order: ['NgayXuat', 'DESC']
 
         });
-
+        console.log(">> chedck user ", user)
         if (user) {
             // let data = user.get({ plain: true })
             return {
