@@ -35,20 +35,20 @@ const resport = async () => {
 
             let getdata = await db.Khohang.findAll({
                 attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                where: { SoLuong: { [Op.gt]: 0 }, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId, HSD: { [Op.gt]: date } },
                 group: 'SanPhamId',
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
             });
 
             let xuatHang = await db.XuatKho.findAll({
                 attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                where: { NgayXuat: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                where: { NgayXuat: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId, HSD: { [Op.gt]: date } },
                 group: 'SanPhamId',
             })
 
             let nhapHang = await db.NhapKho.findAll({
                 attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                where: { NgayNhap: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                where: { NgayNhap: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId, HSD: { [Op.gt]: date } },
                 group: 'SanPhamId',
             })
             console.log(">>> check SL nhap: ", nhapHang)

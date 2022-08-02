@@ -52,7 +52,6 @@ const initApiRoutes = (app) => {
     router.post("/xuatnhap/xuatkho/tongquan/sanphamlinecharts", xuatKhoController.getSPLineCharts);
     router.post("/xuatnhap/xuatkho/tongquan/listloaisanpham", xuatKhoController.getLoaiSanPhamData);
 
-    //chua add role
     router.get("/xuatnhap/tongquan/dudoansoluong", xuatKhoController.predictSL);
     router.get("/xuatnhap/tongquan/dudoansanpham", xuatKhoController.predictSP);
     router.get("/thongbao", khoHangController.notify);
@@ -65,6 +64,9 @@ const initApiRoutes = (app) => {
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);
     router.get("/select/group", selectController.getLevel);
+
+
+    router.put("/user/setvang", userController.setVang);
 
     return app.use("/api/v1/", router);
 }

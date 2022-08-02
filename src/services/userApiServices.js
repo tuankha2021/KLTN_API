@@ -237,6 +237,47 @@ const deleteUser = async (id) => {
     }
 }
 
+const setVang = async (rawdata) => {
+    try {
+
+        let user = await db.NhanVien.findOne({
+            where: { id: rawdata.id }
+        })
+
+        if (user) {
+            // update
+            if (user.Vang == 1) {
+                await user.update({
+                    Vang: 0
+                })
+            } else {
+                await user.update({
+                    Vang: 1
+                })
+            }
+
+            return {
+                EM: "Cập nhật thông tin thành công !",
+                EC: 0,
+                DT: []
+            }
+        } else {
+            return {
+                EM: "Không tìm thấy tài khoản !",
+                EC: 1,
+                DT: []
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        return {
+            EM: "something wrongs with services",
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
 module.exports = {
-    getAllUser, createNewUser, updateUser, deleteUser, getUser
+    getAllUser, createNewUser, updateUser, deleteUser, getUser, setVang
 }
