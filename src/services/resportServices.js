@@ -40,6 +40,18 @@ const resport = async () => {
                 include: { model: db.SanPham, attributes: ['TenSanPham'] },
             });
 
+            let xuatHang = await db.XuatKho.findAll({
+                attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
+                where: { NgayXuat: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                group: 'SanPhamId',
+            })
+
+            let nhapHang = await db.NhapKho.findAll({
+                attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
+                where: { createdAt: date, LoaiSanPhamId: loaiSP[i].LoaiSanPhamId },
+                group: 'SanPhamId',
+            })
+
             let listSanPham = [];
             for (let j in getdata) {
                 let spobj = {
@@ -56,19 +68,17 @@ const resport = async () => {
                 spobj.TenSanPham = getdata[j].SanPham.TenSanPham;
                 spobj.SLTon = getdata[j].SoLuong;
 
-                let nhapHang = await db.NhapKho.findAll({
-                    attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                    where: { SanPhamId: getdata[j].SanPhamId, createdAt: date },
-                    group: 'SanPhamId',
-                })
-                spobj.SLNhap = nhapHang.SoLuong;
+                for (let k in xuatHang) {
+                    if (xuatHang[k].SanPhamId === getdata[j].SanPhamId) {
+                        spobj.SLXuat = xuatHang[k].SoLuong
+                    }
+                }
 
-                let xuatHang = await db.XuatKho.findAll({
-                    attributes: [[sequelize.fn('SUM', sequelize.col('SoLuong')), 'SoLuong'], 'SanPhamId'],
-                    where: { SanPhamId: getdata[j].SanPhamId, createdAt: date },
-                    group: 'SanPhamId',
-                })
-                spobj.SLXuat = xuatHang.SoLuong;
+                for (let k in nhapHang) {
+                    if (nhapHang[k].SanPhamId === getdata[j].SanPhamId) {
+                        spobj.SLNhap = nhapHang[k].SoLuong
+                    }
+                }
 
                 listSanPham.push(spobj);
             }

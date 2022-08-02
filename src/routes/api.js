@@ -9,7 +9,7 @@ import khoHangController from "../controllers/khoHangController";
 import nhapKhoController from "../controllers/nhapKhoController";
 import xuatKhoController from "../controllers/xuatKhoController";
 import selectController from "../controllers/secectController";
-
+import resportController from "../controllers/resportController";
 const router = express.Router();
 
 // const checkUser = (req, res, next) => {
@@ -59,6 +59,8 @@ const initApiRoutes = (app) => {
     router.post("/nhaphang", nhapKhoController.importData);
     router.post("/xuathang/getdata", khoHangController.findSanPham);
     router.post("/xuathang", khoHangController.xuatHang);
+
+    router.get("/baocao", resportController.resport);
 
 
     router.post("/select/sanpham", selectController.getSanPham);
