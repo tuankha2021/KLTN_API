@@ -22,7 +22,7 @@ const router = express.Router();
 
 const initApiRoutes = (app) => {
 
-    // router.all('*', checkUserCookies, checkUserPermission,);
+    router.all('*', checkUserCookies, checkUserPermission,);
 
     router.post("/login", apiController.onSubmitLogin);
     //  user CRUD 
@@ -61,7 +61,6 @@ const initApiRoutes = (app) => {
     router.post("/xuathang", khoHangController.xuatHang);
 
     router.get("/baocao", resportController.resport);
-
 
     router.post("/select/sanpham", selectController.getSanPham);
     router.get("/select/loaisanpham", selectController.getLoaiSanPham);
